@@ -118,14 +118,21 @@ fun Greeting(modifier: Modifier = Modifier) {
                     visualTransformation = PasswordVisualTransformation()
                 )
                 if(userName != "" && passwd != ""){enableState = true}
-                Button(onClick = {
-                    visibile = true
-                    loginText = "Welcome $userName"
-                     }, contentPadding = PaddingValues(horizontal = 40.dp, vertical = 10.dp),
-                    modifier = Modifier.padding(top = 20.dp), colors = ButtonDefaults.buttonColors(
-                        Color(0xFF528F1E)
-                    ), enabled = enableState) {
-                    Text(text = "Login", style = TextStyle(fontSize = 24.sp))
+                if(!visibile){
+                    Button(
+                        onClick = {
+                            visibile = true
+                            loginText = "Welcome $userName"
+                        },
+                        contentPadding = PaddingValues(horizontal = 40.dp, vertical = 10.dp),
+                        modifier = Modifier.padding(top = 20.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            Color(0xFF528F1E)
+                        ),
+                        enabled = enableState
+                    ) {
+                        Text(text = "Login", style = TextStyle(fontSize = 24.sp))
+                    }
                 }
             }
             if (visibile){
