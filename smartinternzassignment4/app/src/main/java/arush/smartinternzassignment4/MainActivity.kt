@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting() {
-    Text(text = "PANCHO", style = TextStyle(fontSize = 100.sp))
+    Text(text = "HELLO", style = TextStyle(fontSize = 100.sp))
 
 }
 
