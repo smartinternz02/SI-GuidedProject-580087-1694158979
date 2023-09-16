@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "arush.smartinternzassignment4"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "arush.smartinternzassignment4"
@@ -73,4 +73,5 @@ dependencies {
 
     implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
     implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
 }

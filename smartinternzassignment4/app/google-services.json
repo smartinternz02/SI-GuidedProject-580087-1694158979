@@ -12,7 +12,20 @@
           "package_name": "arush.smartinternzassignment4"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "658675783751-orravmla7hh0d3qlcqd5ntbehp8vrovm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "arush.smartinternzassignment4",
+            "certificate_hash": "1a8fdd0227e3a51fa01da833c94eaadcf81e5b6b"
+          }
+        },
+        {
+          "client_id": "658675783751-lu3nc0pfguu4p2ltdd7ml505l3eiqlho.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBRkAOkaNjeeIBOsXwQyVOyVa3ikyVYA_M"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "658675783751-lu3nc0pfguu4p2ltdd7ml505l3eiqlho.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
