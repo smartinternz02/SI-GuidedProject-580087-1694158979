@@ -1,6 +1,7 @@
 package arush.smartinternzassignment4
 
 import android.content.Intent
+import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -43,6 +44,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -66,10 +68,16 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    HomeScreen { logOut() }
+                    HomeScreen ({ logOut() }, {it -> orderIntent(num = it)})
                 }
             }
         }
+    }
+
+    private fun orderIntent(num: Int){
+        val intent = Intent(this@MainActivity, MenuActivity::class.java)
+        intent.putExtra("menuNum", num)
+        startActivity(intent)
     }
 
     private fun logOut(){
@@ -83,7 +91,7 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(logOut : () -> Unit) {
+fun HomeScreen(logOut : () -> Unit, orderNow: (Int)-> Unit) {
     Column(modifier = Modifier.fillMaxSize()){
         CenterAlignedTopAppBar(title = {
             Row(modifier = Modifier.height(56.dp),
@@ -121,9 +129,13 @@ fun HomeScreen(logOut : () -> Unit) {
             Column (horizontalAlignment = Alignment.CenterHorizontally){
                 Row(horizontalArrangement = Arrangement.SpaceAround, verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(top = 5.dp)) {
-                    Divider(color = Color(0xFFD5D5D5), thickness = 1.dp, modifier = Modifier.weight(1f))
+                    Divider(color = Color(0xFFD5D5D5), thickness = 1.dp, modifier = Modifier
+                        .weight(1f)
+                        .padding(start = 10.dp))
                     Text(text = "  RECOMMENDED FOR YOU  ", color = Color(0xFF8F8F8F), style = TextStyle(fontSize = 18.sp))
-                    Divider(color = Color(0xFFD5D5D5), thickness = 1.dp, modifier = Modifier.weight(1f))
+                    Divider(color = Color(0xFFD5D5D5), thickness = 1.dp, modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 10.dp))
                 }
 
                 var ranOne = Random.nextInt(0..imageList.size-1)
@@ -140,27 +152,53 @@ fun HomeScreen(logOut : () -> Unit) {
 
             Row(horizontalArrangement = Arrangement.SpaceAround, verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(top = 30.dp)) {
-                Divider(color = Color(0xFFD5D5D5), thickness = 1.dp, modifier = Modifier.weight(1f))
+                Divider(color = Color(0xFFD5D5D5), thickness = 1.dp, modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 10.dp))
                 Text(text = "  ALL  RESTAURANTS  ", color = Color(0xFF8F8F8F), style = TextStyle(fontSize = 18.sp))
-                Divider(color = Color(0xFFD5D5D5), thickness = 1.dp, modifier = Modifier.weight(1f))
+                Divider(color = Color(0xFFD5D5D5), thickness = 1.dp, modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 10.dp))
             }
 
-            hotelCard(bgImage = imageList[0], bgDesc = descList[0], restName = restList[0], cuisineList = cuisineList[0], {})
-            hotelCard(bgImage = imageList[1], bgDesc = descList[1], restName = restList[1], cuisineList = cuisineList[1], {})
-            hotelCard(bgImage = imageList[2], bgDesc = descList[2], restName = restList[2], cuisineList = cuisineList[1], {})
-            hotelCard(bgImage = imageList[3], bgDesc = descList[3], restName = restList[3], cuisineList = cuisineList[0], {})
-            hotelCard(bgImage = imageList[4], bgDesc = descList[4], restName = restList[4], cuisineList = cuisineList[1], {})
-            hotelCard(bgImage = imageList[5], bgDesc = descList[5], restName = restList[5], cuisineList = cuisineList[0], {})
+            hotelCard(bgImage = imageList[0], bgDesc = descList[0], restName = restList[0], cuisineList = cuisineList[0]) {
+                orderNow(0)
+            }
+            hotelCard(bgImage = imageList[1], bgDesc = descList[1], restName = restList[1], cuisineList = cuisineList[1]) {
+                orderNow(1)
+            }
+            hotelCard(bgImage = imageList[2], bgDesc = descList[2], restName = restList[2], cuisineList = cuisineList[1]) {
+                orderNow(2)
+            }
+            hotelCard(bgImage = imageList[3], bgDesc = descList[3], restName = restList[3], cuisineList = cuisineList[0]) {
+                orderNow(3)
+            }
+            hotelCard(bgImage = imageList[4], bgDesc = descList[4], restName = restList[4], cuisineList = cuisineList[1]) {
+                orderNow(4)
+            }
+            hotelCard(bgImage = imageList[5], bgDesc = descList[5], restName = restList[5], cuisineList = cuisineList[0]) {
+                orderNow(5)
+            }
+
+            Row(horizontalArrangement = Arrangement.SpaceAround, verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(top = 15.dp, bottom = 10.dp)) {
+                Divider(color = Color(0xFFD5D5D5), thickness = 1.dp, modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 10.dp))
+                Text(text = "  MORE RESTAURANTS COMING SOON  ", color = Color(0xFF8F8F8F), style = TextStyle(fontSize = 18.sp))
+                Divider(color = Color(0xFFD5D5D5), thickness = 1.dp, modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 10.dp))
+            }
         }
     }
-
 }
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     SmartInternzAssignment4Theme {
-        HomeScreen({})
+        HomeScreen({},{})
     }
 }
 
@@ -221,13 +259,17 @@ fun hotelCard(bgImage: Int, bgDesc: String, restName: String, cuisineList: Strin
                         )
 
                         Image(painter = painterResource(id = R.drawable.baseline_circle_24), contentDescription = "circle",
-                            modifier = Modifier.size(14.dp).padding(bottom = 3.dp))
+                            modifier = Modifier
+                                .size(14.dp)
+                                .padding(bottom = 3.dp))
 
                         Row (modifier = Modifier
                             .fillMaxWidth()
                             .padding(start = 5.dp), verticalAlignment = Alignment.CenterVertically){
                             Image(painter = painterResource(id = R.drawable.timer_pic), contentDescription = "Watch",
-                                modifier = Modifier.size(20.dp).padding(bottom = 3.dp))
+                                modifier = Modifier
+                                    .size(20.dp)
+                                    .padding(bottom = 3.dp))
                             Text(text = "25-35 min", style = TextStyle(fontSize = 15.sp,
                                 fontFamily = FontFamily(Font((R.font.poppins_regular), weight = FontWeight(1)))),
                                 color = Color(0xFF9B9B9B))
