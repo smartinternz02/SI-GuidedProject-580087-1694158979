@@ -145,9 +145,9 @@ fun HomeScreen(logOut : () -> Unit, orderNow: (Int)-> Unit) {
                 while (ranOne == ranTwo){ranTwo = Random.nextInt(0..imageList.size-1)}
 
                 recommendation(bgImage = imageList[ranOne], bgDesc = descList[ranOne], restName = restList[ranOne],
-                    cuisineList = cuisineList[ranCuisine])
+                    cuisineList = cuisineList[ranCuisine], {orderNow(ranOne)})
                 recommendation(bgImage = imageList[ranTwo], bgDesc = descList[ranTwo], restName = restList[ranTwo],
-                    cuisineList = cuisineList[ranCuisineTwo])
+                    cuisineList = cuisineList[ranCuisineTwo], {orderNow(ranTwo)})
             }
 
             Row(horizontalArrangement = Arrangement.SpaceAround, verticalAlignment = Alignment.CenterVertically,
@@ -216,7 +216,7 @@ fun hotelCard(bgImage: Int, bgDesc: String, restName: String, cuisineList: Strin
             shape = RoundedCornerShape(12.dp),
             modifier = Modifier
                 .fillMaxSize()
-                .padding(start = 14.dp, end = 14.dp, top = 18.dp),
+                .padding(start = 14.dp, end = 14.dp, top = 26.dp),
             colors = CardDefaults.cardColors(Color.White),
             onClick = {clickFunction()}
         ) {
@@ -281,7 +281,7 @@ fun hotelCard(bgImage: Int, bgDesc: String, restName: String, cuisineList: Strin
 }
 
 @Composable
-fun recommendation(bgImage: Int, bgDesc: String, restName: String, cuisineList: String){
+fun recommendation(bgImage: Int, bgDesc: String, restName: String, cuisineList: String, orderNow: () -> Unit){
 
     Card(modifier = Modifier
         .fillMaxWidth(0.92f)
@@ -300,7 +300,7 @@ fun recommendation(bgImage: Int, bgDesc: String, restName: String, cuisineList: 
             Box(modifier = Modifier
                 .fillMaxSize()
                 .align(Alignment.CenterVertically)){
-                Button(onClick = { /*TODO*/ }, modifier = Modifier
+                Button(onClick = { orderNow() }, modifier = Modifier
                     .size(78.dp, 36.dp)
                     .align(Alignment.CenterEnd)
                     .padding(end = 10.dp)
