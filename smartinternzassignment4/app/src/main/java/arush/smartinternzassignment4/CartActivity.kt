@@ -51,14 +51,13 @@ class CartActivity : ComponentActivity() {
     private var hotel by Delegates.notNull<Int>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+
         hotel = intent.getIntExtra("imageID", 0)
         cartItems = intent.getSerializableExtra("cartList") as HashMap<String, Int>
-        Log.d("qwert", cartItems.toString())
 
         val subT = subCal(cartItems)
         val gst = gstCal(subT)
-        val delCharge = delCal()
+        val delCharge = delCal(subT)
 
         setContent {
             SmartInternzAssignment4Theme {
@@ -82,7 +81,8 @@ class CartActivity : ComponentActivity() {
     private fun gstCal(subT : Int) : Float{
         return String.format("%.1f", subT*0.05).toFloat()
     }
-    private fun delCal(): Int {
+    private fun delCal(subT: Int): Int {
+        if(subT == 0)return 0
         return Random.nextInt(30..100)
     }
 }
@@ -113,7 +113,7 @@ fun Cart(subTotal: Int, gst: Float, delCharge: Int, hotel: Int) {
                     fontWeight = FontWeight.Bold
                 )
             )
-            Image(painter = painterResource(id = R.drawable.dominos_bg), contentDescription = "Hotel Pic",
+            Image(painter = painterResource(id = hotel), contentDescription = "Hotel Pic",
                 modifier = Modifier
                     .fillMaxWidth(1f)
                     .fillMaxHeight(0.3f),
