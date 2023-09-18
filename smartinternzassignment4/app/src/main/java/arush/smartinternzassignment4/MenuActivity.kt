@@ -1,11 +1,13 @@
 package arush.smartinternzassignment4
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -52,11 +54,11 @@ import kotlin.random.Random
 import kotlin.random.nextInt
 
 class MenuActivity : ComponentActivity() {
+    lateinit var cartItems : MutableMap<String, Int>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        cartItems = HashMap()
         val num = intent.getIntExtra("menuNum", 0)
-        Log.d("qwerty", num.toString())
 
         setContent {
             SmartInternzAssignment4Theme {
@@ -65,15 +67,25 @@ class MenuActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    menuScreen(num)
+                    menuScreen(num, { name, price -> addToCart(name, price) }, {num -> openCart(num)})
                 }
             }
         }
     }
+    private fun addToCart(itemName: String, price: Int){
+        cartItems[itemName] = price
+    }
+    private fun openCart(num: Int){
+        val cart = HashMap(cartItems)
+        val intent = Intent(this@MenuActivity, CartActivity::class.java)
+        intent.putExtra("cartList", cart)
+        intent.putExtra("imageID", num)
+        startActivity(intent)
+    }
 }
 
 @Composable
-fun menuScreen(num: Int) {
+fun menuScreen(num: Int, addtoCart: (String, Int)-> Unit, openCart: (Int) -> Unit) {
 
     var itemCount by remember { mutableStateOf(0) }
 
@@ -101,7 +113,7 @@ fun menuScreen(num: Int) {
                 Box(modifier = Modifier
                     .fillMaxHeight()
                     .align(Alignment.CenterVertically)
-                    .padding(end = 10.dp)){
+                    .padding(end = 10.dp).clickable { openCart(imageList[num]) }){
                     Image(painter = painterResource(id = R.drawable.baseline_shopping_cart_24), contentDescription = "Cart",
                         modifier = Modifier
                             .align(Alignment.CenterEnd)
@@ -138,7 +150,10 @@ fun menuScreen(num: Int) {
 
             var imgArray = map["menu$num"]
             while(i<6){
-                cardMaker(imgArray?.get(i) ?: R.drawable.timer_pic,menuArray[i]) { itemCount++ }
+                cardMaker(imgArray?.get(i) ?: R.drawable.timer_pic,menuArray[i]) {name,price->
+                    itemCount++
+                    addtoCart(name, price)
+                }
                 i++
             }
             Row(horizontalArrangement = Arrangement.SpaceAround, verticalAlignment = Alignment.CenterVertically,
@@ -157,7 +172,8 @@ fun menuScreen(num: Int) {
 }
 
 @Composable
-fun cardMaker(imageId: Int, itemName: String, itemCounter: () -> Unit ){
+fun cardMaker(imageId: Int, itemName: String, itemCounter: (String, Int) -> Unit ){
+    val price = makePrice()
     Card(modifier = Modifier
         .fillMaxWidth(0.95f)
         .wrapContentHeight()
@@ -171,19 +187,21 @@ fun cardMaker(imageId: Int, itemName: String, itemCounter: () -> Unit ){
                 Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxHeight()) {
                     Image(painter = painterResource(id = imageId), contentDescription = "Food pic",
                         modifier = Modifier.size(96.dp), contentScale = ContentScale.Crop)
-                    Column(modifier = Modifier.fillMaxHeight().fillMaxWidth(0.60f),
+                    Column(modifier = Modifier
+                        .fillMaxHeight()
+                        .fillMaxWidth(0.60f),
                         verticalArrangement = Arrangement.Center) {
                         Text(text = itemName, style = TextStyle(fontFamily = FontFamily(Font((R.font.roboto_regular),
                             weight = FontWeight(1))), fontSize = 22.sp),
                             modifier = Modifier.padding(start = 10.dp), maxLines = 2, overflow = TextOverflow.Ellipsis)
-                        Text(text = "₹ "+ makePrice().toString(), style = TextStyle(fontSize = 18.sp),
+                        Text(text = "₹ "+ price.toString(), style = TextStyle(fontSize = 18.sp),
                             modifier = Modifier.padding(start = 10.dp, top = 8.dp))
                     }
                 }
                 Box(modifier = Modifier
                     .fillMaxSize()
                     .align(Alignment.CenterVertically),) {
-                    Button(onClick = { itemCounter() }, modifier = Modifier
+                    Button(onClick = { itemCounter(itemName, price) }, modifier = Modifier
                         .size(100.dp, 38.dp)
                         .padding(end = 10.dp)
                         .align(Alignment.CenterEnd)
@@ -209,6 +227,6 @@ private fun makePrice() : Int{
 @Composable
 fun GreetingPreview2() {
     SmartInternzAssignment4Theme {
-        menuScreen(0)
+        menuScreen(0,{_,_ ->},{})
     }
 }
