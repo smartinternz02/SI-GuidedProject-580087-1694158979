@@ -51,6 +51,7 @@ class CartActivity : ComponentActivity() {
     private var hotel by Delegates.notNull<Int>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
         hotel = intent.getIntExtra("imageID", 0)
         cartItems = intent.getSerializableExtra("cartList") as HashMap<String, Int>
         Log.d("qwert", cartItems.toString())
