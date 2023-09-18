@@ -1,13 +1,11 @@
 package arush.smartinternzassignment4
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,7 +18,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -38,7 +35,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -188,7 +184,7 @@ fun cardMaker(imageId: Int, itemName: String, itemCounter: () -> Unit ){
                     .fillMaxSize()
                     .align(Alignment.CenterVertically),) {
                     Button(onClick = { itemCounter() }, modifier = Modifier
-                        .size(110.dp, 38.dp)
+                        .size(100.dp, 38.dp)
                         .padding(end = 10.dp)
                         .align(Alignment.CenterEnd)
                         , colors = ButtonDefaults.buttonColors(Color(0xFFFFB3B9)),
@@ -196,7 +192,7 @@ fun cardMaker(imageId: Int, itemName: String, itemCounter: () -> Unit ){
                         shape = RoundedCornerShape(8.dp),
                         border = BorderStroke(1.dp, Color(0xFFE93545))
                     ) {
-                        Text(text = "Add to Cart", color = Color(0xFFE93545), style = TextStyle(fontSize = 17.sp,
+                        Text(text = "ADD", color = Color(0xFFE93545), style = TextStyle(fontSize = 19.sp,
                             fontWeight = FontWeight.Bold), modifier = Modifier.padding(start = 2.dp, end = 2.dp))
                     }
                 }
